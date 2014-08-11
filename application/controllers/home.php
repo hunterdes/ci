@@ -25,9 +25,14 @@ class Home extends CI_Controller {
 	}
 	
 	public function menu(){
+	
 		$this->load->model('Dish_model','', TRUE);
+		
 		$data["main_content"] = "menu";
+		
 		$this->load->helper('url');
+
+		$arr = array();
 		
 		if(isset($_SESSION['orders'])){
 			
@@ -36,11 +41,14 @@ class Home extends CI_Controller {
 
 		$dishes = $this->Dish_model->get_today_dish();
 		
-		$arr = array();
+		if(count($dishes)>0){
 		
-		if(isset($_SESSION["orders"])){
-			
-			$arr = $_SESSION["orders"];
+			foreach($dishes as $key => $dish){
+
+				$dish->full = $this ->Dish_model-> is_order_full($dish->id);
+				
+				$dishes[$key] = $dish;
+			}
 		}
 		
 		$data["dishes"] = $dishes;
@@ -104,6 +112,11 @@ class Home extends CI_Controller {
 			}
 		}
 		
+		if(isset($_SESSION["orders"])){
+			
+			$_SESSION["orders"] = $arr;
+		}
+		
 		$data["orders"] = $arr;
 		
 		$_SESSION["orders"] = $arr;
@@ -117,16 +130,22 @@ class Home extends CI_Controller {
 	
 		$this->load->model('Dish_model','', TRUE);
 		
-		$arrOrderId = $_POST["orderid"];
-		$arrOrderNumber = $_POST["ordernumber"];
-		$emailInput = $_POST["emailinput"];
-		$nameInput = $_POST["nameinput"];
-		$addressInput = $_POST["addressinput"];
-		$extraInput = $_POST["extrainput"];
+		$arrOrderId = isset($_POST["orderid"])?$_POST["orderid"]:'';
+		$arrOrderNumber = isset($_POST["ordernumber"])?$_POST["ordernumber"]:'';
+		$emailInput = isset($_POST["emailinput"])?$_POST["emailinput"]:'';
+		$nameInput = isset($_POST["nameinput"])?$_POST["nameinput"]:'';
+		$addressInput = isset($_POST["addressinput"])?$_POST["addressinput"]:'';
+		$extraInput = isset($_POST["extrainput"])?$_POST["extrainput"]:'';
 		
-		$this->Dish_model->save_order($_POST);
+		if($arrOrderId != "" && $arrOrderNumber!="" && $emailInput!="" && $nameInput!="" && $addressInput!=""){
 		
-		echo "Your enquire has been successfully sent";
+			$this->Dish_model->save_order($_POST);
+		
+			echo "<p style=\"color:green\">Your enquire has been successfully sent</p>";
+		}
+		else{
+
+		}
 	}
 	
 	public function order(){

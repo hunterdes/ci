@@ -29,6 +29,46 @@ class Dish_model extends CI_Model {
 
 	}
 	
+	function is_order_full($dish_id){
+	
+		$sql = "select * from dish d inner join dish_order do on d.id = do.dish_id inner join takeway.order o on o.id= do.order_id WHERE o.datetime > available_ordertime_start AND o.datetime < available_ordertime_end AND d.id=".$dish_id;
+		
+		$query = $this -> db -> query($sql);
+		
+		$arr = $query -> result();
+		
+		//echo $this -> db -> last_query()."<br/>";
+		
+		$sql = "SELECT * FROM order_limit LIMIT 1";
+		
+		$query = $this -> db -> query($sql);
+		
+		$arr1 = $query -> result();
+		
+		$row_limit = $arr1[0]->limit;
+		
+		return $row_limit - count($arr);
+	}
+	
+	function get_daily_order_limit(){
+	
+		$sql = "SELECT * FROM order_limit LIMIT 1";
+		
+		$query = $this -> db -> query($sql);
+		
+		$arr1 = $query -> result();
+		
+		$row_limit = $arr1[0]->limit;
+		
+		return $row_limit;
+	}
+	
+	function update_limit_value($value){
+	
+		$this->db->where('id', 1);
+		$this->db->update('order_limit', array("limit"=>$value));
+	}
+	
 	function save_order($arr){
 	
 		$arrOrderId = $arr["orderid"];
@@ -38,7 +78,7 @@ class Dish_model extends CI_Model {
 		$teleInput = $arr["phoneinput"];
 		$addressInput = $arr["addressinput"];
 		$extraInput = $arr["extrainput"];
-		$curDate = date('Y-m-d h:i:s a', time());//0000-00-00 00:00:00.00
+		$curDate = date('Y-m-d H:i:s a', time());//0000-00-00 00:00:00.00
 		
 		$data = array(
 		   'email' => $emailInput ,

@@ -40,7 +40,9 @@ $(document).ready(function(){
 		
 	$(document).ready(function(){
 
-		bindValidation();
-		bindSubmit();
+		// bindMenuEvent();
+		// bindOrderEvent();
+		// bindSubmit();
+		// bindValidation();
 	});
 	</script>

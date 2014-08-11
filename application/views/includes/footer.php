@@ -1,6 +1,6 @@
 <footer>
 <div class="container">
-<p>wen yu company</p>
+<p>©Company</p>
 </div>
 </footer>
 </body>

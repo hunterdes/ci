@@ -20,7 +20,7 @@
 			<ul class="nav navbar-nav">
 			  <li class="<?php echo ($main=="home")?"active":""?>"><a href="<?php echo base_url();?>index.php/home/index">Home</a></li>
 			  <li class="<?php echo ($main=="menu")?"active":""?>"><a href="<?php echo base_url();?>index.php/home/menu">Menu</a></li>
-			  <li class="<?php echo ($main=="order")?"active":""?>"><a href="<?php echo base_url();?>index.php/home/order">My Order</a></li>
+			  <!--<li class="<?php echo ($main=="order")?"active":""?>"><a href="<?php echo base_url();?>index.php/home/order">My Order</a></li>-->
 			</ul>
 		</div>
 	</div>

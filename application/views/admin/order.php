@@ -55,4 +55,16 @@
 				
 			}
 		?>
+		
+		<div class="limit_div">
+			<h2>Limit of Daily Order</h2>
+			<input name="limit" id="input_daily_order" data-url="<?php echo base_url();?>index.php/admin/update_limit" value="<?php echo $order_limit;?>"/>
+			<div id="messagebox_limit"></div>
+		</div>
 	</div>
+	<script>
+		
+		$(document).ready(function(){
+			orderForm();
+		});
+	</script>

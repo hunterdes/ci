@@ -14,11 +14,15 @@ class Admin extends CI_Controller {
 
 			$this->load->model('Dish_model','', TRUE);
 			
-			$orders = $this -> Dish_model -> get_orders();
+			$order_limit = $this -> Dish_model -> get_daily_order_limit();
 			
+			$data["order_limit"] = $order_limit;
+
 			$data["main"] = "order";
 			
-			$data["order"] = $orders;
+			$orders = $this -> Dish_model -> get_orders();
+			
+			$data["order"] = $orders;	
 			
 			$this -> load -> view('admin/header',$data);
 			
@@ -113,6 +117,15 @@ class Admin extends CI_Controller {
 		
 			echo "System Error";
 		}
+	}
+	
+	public function update_limit(){
+		$this->load->model('Dish_model','', TRUE);
+
+		$value = $_POST["value"];
+		$this -> Dish_model -> update_limit_value($value);
+		
+		echo "<p style=\"color:green\">Limit has been updated to ".$value."</p>";
 	}
 	
 	

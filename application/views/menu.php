@@ -23,16 +23,18 @@
 	});
 	</script>
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.js"></script>
-	<?php if(count($dishes)>0){?>
-		<?php foreach($dishes as $key => $value){?>
-			<div class="row">
-			  <div class="col-lg-3"><img src="<?php echo base_url()."assets".$value->image;?>" width="100px"/></div>
-			  <div class="col-lg-4"><?php echo $value->chinese_name;?></div>
-			  <div class="col-lg-3"><?php echo $value->price;?></div>
-			  <div class="col-lg-1"><button class="btn add-button" data-id="<?php echo $value->id;?>" data-name="<?php echo $value->name;?>" data-chinese_name="<?php echo $value->chinese_name;?>" data-img="<?php echo $value->image;?>" data-price="<?php echo $value->price?>" data-url="<?php echo base_url().'index.php/home/ajax_order_food'?>">order</button></div>
-			</div>
-		<?php } ?>
-	<?php }?>
+	<div class="dish_menu">
+		<?php if(count($dishes)>0){?>
+			<?php foreach($dishes as $key => $value){?>
+				<div class="row">
+				  <div class="col-lg-3"><img src="<?php echo base_url()."assets".$value->image;?>" width="100px"/></div>
+				  <div class="col-lg-4"><?php echo $value->chinese_name;?></div>
+				  <div class="col-lg-3"><?php echo $value->price;?></div>
+				  <div class="col-lg-1"><?php if($value->full>0){?><button class="btn add-button" data-id="<?php echo $value->id;?>" data-name="<?php echo $value->name;?>" data-chinese_name="<?php echo $value->chinese_name;?>" data-img="<?php echo $value->image;?>" data-limit="<?php echo $value->full?>" data-remain="<?php echo $value->full?>" data-price="<?php echo $value->price?>" data-url="<?php echo base_url().'index.php/home/ajax_order_food'?>">order</button><?php }?></div>
+				</div>
+			<?php } ?>
+		<?php }?>
+	</div>
 	<form class="form-horizontal" style="width:800px;" id="components" action="<?php echo base_url()?>index.php/home/book_food" method="post">
 			<fieldset>
 
@@ -48,7 +50,7 @@
 		<div class="col-lg-2"><img src="<?php echo base_url()."assets".$arr["image"];?>" width="100px"/></div>
 		<div class="col-lg-1"><?php echo $arr["chinese_name"];?></div>
 		<div class="col-lg-1"><?php echo $arr["price"];?></div>
-		<div class="col-lg-1"><?php echo $arr["count"];?></div>
+		<div class="col-lg-1 count"><?php echo $arr["count"];?></div>
 		<div class="col-lg-1">
 				<a class="btn btn-danger delete-button" href="#" data-id="<?php echo $key;?>" data-url="<?php echo base_url()."index.php/home/delete_order";?>">
 					<i class="icon-trash icon-white"></i>
@@ -109,7 +111,16 @@
 		<script>
 		
 		$(document).ready(function(){
-
+			$("#your_orders div.row").each(
+				function(){
+				
+					var id = $(this).find("a.delete-button").attr("data-id");
+					var count = $(this).find(".count").text();
+					var limit = $(".dish_menu button[data-id='"+id+"']").attr("data-limit");
+					var remain = limit - count;
+					$(".dish_menu button[data-id='"+id+"']").attr("data-remain",remain);
+				}
+			);
 		});
 		</script>
 	</div>
